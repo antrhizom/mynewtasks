@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berufseinstieg - ABU EBA Digital</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Berufseinstieg</h1>
+            <p class="subtitle">ABU EBA Digital - Handlungskompetenzorientiertes Lernen</p>
+        </header>
+
+        <main id="welcome-screen" class="welcome">
+            <div class="info-box">
+                <h2>Willkommen!</h2>
+                <p>Diese interaktive Lerneinheit zum Thema <strong>Berufseinstieg</strong> ist Teil des Schullehrplans ABU und fokussiert auf die Entwicklung von Handlungskompetenzen.</p>
+                
+                <div class="slp-info">
+                    <h3>📚 Kompetenzorientierung im SLP ABU</h3>
+                    <p>Du arbeitest selbstständig an diesem Thema und entwickelst dabei wichtige Kompetenzen für deinen Berufseinstieg. Die Plattform erfasst deine Lernaktivitäten und erstellt am Ende ein Aktivitätszertifikat.</p>
+                </div>
+
+                <div class="stats">
+                    <p class="code-counter">Bisher ausgegebene Codes: <span id="totalCodes">--</span></p>
+                </div>
+
+                <div class="action-box">
+                    <button id="startBtn" class="btn-primary">Lerneinheit starten</button>
+                    <p class="info-text">Bei Start erhältst du einen einmaligen Code für diese Sitzung</p>
+                </div>
+
+                <div id="codeDisplay" class="code-display hidden">
+                    <h3>Dein persönlicher Code:</h3>
+                    <div class="code-box">
+                        <span id="userCode" class="user-code"></span>
+                    </div>
+                    <p class="warning">⚠️ Dieser Code ist einmalig und kann nicht wiederverwendet werden!</p>
+                    <button id="continueBtn" class="btn-secondary">Weiter zum Lernen</button>
+                </div>
+            </div>
+        </main>
+
+        <nav id="main-nav" class="hidden">
+            <div class="nav-item" data-page="learn1">
+                <span class="nav-number">1</span>
+                <span class="nav-title">Grundlagen</span>
+            </div>
+            <div class="nav-item" data-page="learn2">
+                <span class="nav-number">2</span>
+                <span class="nav-title">Vertiefung</span>
+            </div>
+            <div class="nav-item" data-page="activity">
+                <span class="nav-number">3</span>
+                <span class="nav-title">Aktivitätsbericht</span>
+            </div>
+        </nav>
+
+        <footer>
+            <p>ABU EBA Digital | Dein Code: <span id="footerCode">--</span></p>
+        </footer>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, updateDoc, doc, getDoc, getDocs, query, orderBy, limit, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase Konfiguration - BITTE MIT DEINEN DATEN ERSETZEN
+        const firebaseConfig = {
+            apiKey: "DEIN_API_KEY",
+            authDomain: "DEIN_AUTH_DOMAIN",
+            projectId: "DEIN_PROJECT_ID",
+            storageBucket: "DEIN_STORAGE_BUCKET",
+            messagingSenderId: "DEINE_MESSAGING_SENDER_ID",
+            appId: "DEINE_APP_ID"
+        };
+
+        // Firebase initialisieren
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Globale Variablen
+        window.userCode = null;
+        window.sessionId = null;
+        window.db = db;
+
+        // Code generieren
+        function generateCode() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = '';
+            for (let i = 0; i < 8; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Anzahl Codes laden
+        async function loadCodeCount() {
+            try {
+                const sessionsRef = collection(db, 'sessions');
+                const snapshot = await getDocs(sessionsRef);
+                const count = snapshot.size;
+                document.getElementById('totalCodes').textContent = count;
+            } catch (error) {
+                console.error('Fehler beim Laden der Code-Anzahl:', error);
+                document.getElementById('totalCodes').textContent = '0';
+            }
+        }
+
+        // Neue Session erstellen
+        async function createSession() {
+            const code = generateCode();
+            try {
+                const docRef = await addDoc(collection(db, 'sessions'), {
+                    code: code,
+                    createdAt: serverTimestamp(),
+                    startTime: new Date().toISOString(),
+                    activities: {
+                        learn1: {
+                            visited: false,
+                            timeSpent: 0,
+                            audioPlayed: false,
+                            videoWatched: false,
+                            tasksCompleted: 0
+                        },
+                        learn2: {
+                            visited: false,
+                            timeSpent: 0,
+                            audioPlayed: false,
+                            videoWatched: false,
+                            tasksCompleted: 0,
+                            textInput: ''
+                        }
+                    },
+                    completed: false
+                });
+
+                window.userCode = code;
+                window.sessionId = docRef.id;
+                
+                // Im localStorage speichern
+                localStorage.setItem('berufseinstieg_code', code);
+                localStorage.setItem('berufseinstieg_session', docRef.id);
+
+                return { code, sessionId: docRef.id };
+            } catch (error) {
+                console.error('Fehler beim Erstellen der Session:', error);
+                alert('Fehler beim Erstellen des Codes. Bitte versuche es erneut.');
+                return null;
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('startBtn').addEventListener('click', async () => {
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('startBtn').textContent = 'Code wird generiert...';
+
+            const session = await createSession();
+            
+            if (session) {
+                document.getElementById('userCode').textContent = session.code;
+                document.getElementById('codeDisplay').classList.remove('hidden');
+                await loadCodeCount();
+            }
+        });
+
+        document.getElementById('continueBtn').addEventListener('click', () => {
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('main-nav').classList.remove('hidden');
+            document.getElementById('footerCode').textContent = window.userCode;
+            
+            // Zur ersten Lernseite wechseln
+            window.location.href = 'learn1.html';
+        });
+
+        // Bei Seitenload Code-Anzahl laden
+        loadCodeCount();
+
+        // Prüfen ob bereits ein Code existiert
+        const existingCode = localStorage.getItem('berufseinstieg_code');
+        const existingSession = localStorage.getItem('berufseinstieg_session');
+        
+        if (existingCode && existingSession) {
+            // Prüfen ob Session noch gültig ist
+            const sessionRef = doc(db, 'sessions', existingSession);
+            getDoc(sessionRef).then(docSnap => {
+                if (docSnap.exists() && !docSnap.data().completed) {
+                    // Session existiert noch - direkt weiterleiten
+                    if (confirm('Du hast bereits eine aktive Sitzung. Möchtest du fortfahren?')) {
+                        window.userCode = existingCode;
+                        window.sessionId = existingSession;
+                        window.location.href = 'learn1.html';
+                    } else {
+                        // Neue Session starten
+                        localStorage.removeItem('berufseinstieg_code');
+                        localStorage.removeItem('berufseinstieg_session');
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
