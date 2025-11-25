@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktivitätsbericht - Berufseinstieg</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Dein Aktivitätsbericht</h1>
+            <p class="subtitle">Seite 3 von 3</p>
+        </header>
+
+        <nav class="page-nav">
+            <a href="learn2.html" class="nav-link">← Vertiefung</a>
+            <span class="nav-title">Aktivitätsbericht</span>
+            <a href="index.html" class="nav-link">Zum Start</a>
+        </nav>
+
+        <main class="activity-content">
+            <div class="report-header">
+                <h2>📊 Übersicht deiner Lernaktivitäten</h2>
+                <p>Hier siehst du, wie aktiv du während dieser Lerneinheit warst. Der Bericht kann als PDF heruntergeladen werden.</p>
+                <div class="code-display-small">
+                    <strong>Dein Code:</strong> <span id="reportCode">--</span>
+                </div>
+            </div>
+
+            <div id="reportContent" class="report-container">
+                <section class="report-section">
+                    <h3>⏱️ Zeitaufwand</h3>
+                    <div class="stat-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalTime">-- Min.</div>
+                            <div class="stat-label">Gesamtzeit</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="learn1Time">-- Min.</div>
+                            <div class="stat-label">Seite 1 (Grundlagen)</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="learn2Time">-- Min.</div>
+                            <div class="stat-label">Seite 2 (Vertiefung)</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="report-section">
+                    <h3>🎯 Medienkonsumation</h3>
+                    <div class="checklist">
+                        <div class="check-item">
+                            <span class="check-icon" id="audio1Check">⬜</span>
+                            <span>Audio 1: "Die ersten Tage im Betrieb" gehört</span>
+                        </div>
+                        <div class="check-item">
+                            <span class="check-icon" id="video1Check">⬜</span>
+                            <span>Video 1: "Rechte und Pflichten" angesehen</span>
+                        </div>
+                        <div class="check-item">
+                            <span class="check-icon" id="audio2Check">⬜</span>
+                            <span>Audio 2: "Dos and Don'ts im Betrieb" gehört</span>
+                        </div>
+                        <div class="check-item">
+                            <span class="check-icon" id="video2Check">⬜</span>
+                            <span>Video 2: "Konflikte am Arbeitsplatz" angesehen</span>
+                        </div>
+                    </div>
+                    <div class="completion-bar">
+                        <div class="progress-label">Medien-Fortschritt:</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="mediaProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-percentage" id="mediaPercentage">0%</div>
+                    </div>
+                </section>
+
+                <section class="report-section">
+                    <h3>✅ Aufgaben</h3>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <span class="task-number">1</span>
+                            <div class="task-details">
+                                <strong>Reflexion: Erwartungen an Berufseinstieg</strong>
+                                <span class="task-status" id="task1Status">Nicht bearbeitet</span>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-number">2</span>
+                            <div class="task-details">
+                                <strong>Verständnisfragen (Quiz)</strong>
+                                <span class="task-status" id="task2Status">Nicht bearbeitet</span>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-number">3</span>
+                            <div class="task-details">
+                                <strong>Fallbeispiel: Mara analysieren</strong>
+                                <span class="task-status" id="task3Status">Nicht bearbeitet</span>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-number">4</span>
+                            <div class="task-details">
+                                <strong>Persönliche Ziele formulieren</strong>
+                                <span class="task-status" id="task4Status">Nicht bearbeitet</span>
+                            </div>
+                        </div>
+                        <div class="task-item">
+                            <span class="task-number">5</span>
+                            <div class="task-details">
+                                <strong>Selbstreflexion (Bewertung)</strong>
+                                <span class="task-status" id="task5Status">Nicht bearbeitet</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="completion-bar">
+                        <div class="progress-label">Aufgaben-Fortschritt:</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="taskProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-percentage" id="taskPercentage">0%</div>
+                    </div>
+                </section>
+
+                <section class="report-section">
+                    <h3>🎓 Gesamtbewertung</h3>
+                    <div class="overall-score">
+                        <div class="score-circle" id="overallScore">
+                            <span class="score-value">--</span>
+                            <span class="score-max">/100</span>
+                        </div>
+                        <div class="score-description">
+                            <p id="scoreText">Lade Aktivitätsdaten...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="report-section">
+                    <h3>📝 Kommentar</h3>
+                    <div id="finalComment" class="final-comment">
+                        <p>Laden...</p>
+                    </div>
+                </section>
+            </div>
+
+            <div class="action-buttons">
+                <button id="refreshBtn" class="btn-secondary">🔄 Daten aktualisieren</button>
+                <button id="downloadBtn" class="btn-primary">📥 Als PDF herunterladen</button>
+                <button id="shareBtn" class="btn-secondary">🔗 Link teilen</button>
+            </div>
+
+            <div class="info-box-small">
+                <p>⚠️ <strong>Wichtig:</strong> Dieser Aktivitätsbericht ist an deinen einmaligen Code gebunden. Nach dem Abschluss der Lerneinheit kann der Code nicht mehr verwendet werden.</p>
+            </div>
+
+            <div class="navigation-buttons">
+                <a href="learn2.html" class="btn-secondary">← Zurück</a>
+                <a href="index.html" class="btn-primary">Zur Startseite</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>ABU EBA Digital | Dein Code: <span id="footerCode">--</span> | Seite 3/3</p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script type="module" src="js/activity.js"></script>
+</body>
+</html>
