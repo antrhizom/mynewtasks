@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertiefung - Berufseinstieg</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Berufseinstieg - Vertiefung</h1>
+            <p class="subtitle">Seite 2 von 3</p>
+        </header>
+
+        <nav class="page-nav">
+            <a href="learn1.html" class="nav-link">← Grundlagen</a>
+            <span class="nav-title">Vertiefung</span>
+            <a href="activity.html" class="nav-link">Weiter →</a>
+        </nav>
+
+        <main class="learn-content">
+            <section class="content-block">
+                <h2>💼 Erfolgreich im Betrieb ankommen</h2>
+                <p>Die ersten Wochen sind entscheidend. Hier erfährst du, wie du einen guten Start hinlegst und welche Stolpersteine du vermeiden solltest.</p>
+
+                <div class="media-box">
+                    <h3>🎧 Audio: Dos and Don'ts im Betrieb</h3>
+                    <audio id="audio2" controls>
+                        <source src="audio/berufseinstieg-tipps.mp3" type="audio/mpeg">
+                        Dein Browser unterstützt keine Audio-Wiedergabe.
+                    </audio>
+                    <p class="media-info">Dauer: ca. 5 Minuten</p>
+                </div>
+            </section>
+
+            <section class="content-block">
+                <h2>🌟 Kompetenzen für den Berufseinstieg</h2>
+                
+                <div class="competence-grid">
+                    <div class="competence-card">
+                        <div class="competence-icon">🤝</div>
+                        <h3>Sozialkompetenzen</h3>
+                        <ul>
+                            <li>Teamfähigkeit zeigen</li>
+                            <li>Respektvoll kommunizieren</li>
+                            <li>Kritik annehmen können</li>
+                            <li>Hilfe anbieten und annehmen</li>
+                        </ul>
+                    </div>
+
+                    <div class="competence-card">
+                        <div class="competence-icon">⚙️</div>
+                        <h3>Fachkompetenzen</h3>
+                        <ul>
+                            <li>Berufsspezifisches Wissen anwenden</li>
+                            <li>Neue Fertigkeiten erlernen</li>
+                            <li>Qualität der Arbeit sicherstellen</li>
+                            <li>Sich weiterbilden</li>
+                        </ul>
+                    </div>
+
+                    <div class="competence-card">
+                        <div class="competence-icon">🎯</div>
+                        <h3>Selbstkompetenzen</h3>
+                        <ul>
+                            <li>Zuverlässig und pünktlich sein</li>
+                            <li>Selbstständig arbeiten</li>
+                            <li>Mit Stress umgehen</li>
+                            <li>Motivation zeigen</li>
+                        </ul>
+                    </div>
+
+                    <div class="competence-card">
+                        <div class="competence-icon">🔧</div>
+                        <h3>Methodenkompetenzen</h3>
+                        <ul>
+                            <li>Aufgaben organisieren</li>
+                            <li>Probleme systematisch lösen</li>
+                            <li>Informationen beschaffen</li>
+                            <li>Zeitmanagement beherrschen</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-block">
+                <h2>🎥 Video: Konflikte am Arbeitsplatz</h2>
+                
+                <div class="media-box">
+                    <div class="video-placeholder" id="video2">
+                        <p>📺 Video: Wie gehst du mit Konflikten um?</p>
+                        <button class="btn-play" onclick="playVideo('video2')">▶ Video abspielen</button>
+                    </div>
+                    <p class="media-info">Dauer: ca. 6 Minuten</p>
+                </div>
+            </section>
+
+            <section class="content-block task-section">
+                <h2>✍️ Aufgabe 3: Fallbeispiel analysieren</h2>
+                
+                <div class="case-study">
+                    <h3>Situation:</h3>
+                    <p>Mara ist seit 2 Wochen als kaufmännische Lernende im Betrieb. Sie hat Mühe, sich die vielen neuen Informationen zu merken. Ihre Betreuerin wirkt genervt, wenn Mara mehrmals nachfragt. Mara überlegt, ob sie überhaupt für diesen Beruf geeignet ist.</p>
+                </div>
+
+                <div class="task-box">
+                    <label for="task3">Was würdest du Mara raten? Begründe deine Antwort.</label>
+                    <textarea id="task3" rows="8" placeholder="Deine Empfehlung an Mara... (mind. 100 Zeichen)"></textarea>
+                    <div class="char-counter">
+                        <span id="charCount3">0</span> Zeichen
+                    </div>
+                    <button id="saveTask3" class="btn-secondary">Antwort speichern</button>
+                </div>
+            </section>
+
+            <section class="content-block task-section">
+                <h2>🎯 Aufgabe 4: Deine persönlichen Ziele</h2>
+                
+                <div class="task-box">
+                    <label for="task4">Formuliere drei konkrete Ziele, die du in deinen ersten drei Monaten im Betrieb erreichen möchtest:</label>
+                    <textarea id="task4" rows="6" placeholder="Ziel 1: ...
+Ziel 2: ...
+Ziel 3: ...
+(mind. 80 Zeichen)"></textarea>
+                    <div class="char-counter">
+                        <span id="charCount4">0</span> Zeichen
+                    </div>
+                    <button id="saveTask4" class="btn-secondary">Ziele speichern</button>
+                </div>
+            </section>
+
+            <section class="content-block task-section">
+                <h2>🤔 Aufgabe 5: Selbstreflexion</h2>
+                
+                <div class="reflection-box">
+                    <p>Bewerte dich selbst: Wie gut beherrschst du bereits folgende Kompetenzen?</p>
+                    
+                    <div class="rating-item">
+                        <label>Pünktlichkeit:</label>
+                        <div class="rating-stars">
+                            <input type="radio" name="r1" value="1" id="r1-1"><label for="r1-1">⭐</label>
+                            <input type="radio" name="r1" value="2" id="r1-2"><label for="r1-2">⭐</label>
+                            <input type="radio" name="r1" value="3" id="r1-3"><label for="r1-3">⭐</label>
+                            <input type="radio" name="r1" value="4" id="r1-4"><label for="r1-4">⭐</label>
+                            <input type="radio" name="r1" value="5" id="r1-5"><label for="r1-5">⭐</label>
+                        </div>
+                    </div>
+
+                    <div class="rating-item">
+                        <label>Teamfähigkeit:</label>
+                        <div class="rating-stars">
+                            <input type="radio" name="r2" value="1" id="r2-1"><label for="r2-1">⭐</label>
+                            <input type="radio" name="r2" value="2" id="r2-2"><label for="r2-2">⭐</label>
+                            <input type="radio" name="r2" value="3" id="r2-3"><label for="r2-3">⭐</label>
+                            <input type="radio" name="r2" value="4" id="r2-4"><label for="r2-4">⭐</label>
+                            <input type="radio" name="r2" value="5" id="r2-5"><label for="r2-5">⭐</label>
+                        </div>
+                    </div>
+
+                    <div class="rating-item">
+                        <label>Selbstständigkeit:</label>
+                        <div class="rating-stars">
+                            <input type="radio" name="r3" value="1" id="r3-1"><label for="r3-1">⭐</label>
+                            <input type="radio" name="r3" value="2" id="r3-2"><label for="r3-2">⭐</label>
+                            <input type="radio" name="r3" value="3" id="r3-3"><label for="r3-3">⭐</label>
+                            <input type="radio" name="r3" value="4" id="r3-4"><label for="r3-4">⭐</label>
+                            <input type="radio" name="r3" value="5" id="r3-5"><label for="r3-5">⭐</label>
+                        </div>
+                    </div>
+
+                    <div class="rating-item">
+                        <label>Kritikfähigkeit:</label>
+                        <div class="rating-stars">
+                            <input type="radio" name="r4" value="1" id="r4-1"><label for="r4-1">⭐</label>
+                            <input type="radio" name="r4" value="2" id="r4-2"><label for="r4-2">⭐</label>
+                            <input type="radio" name="r4" value="3" id="r4-3"><label for="r4-3">⭐</label>
+                            <input type="radio" name="r4" value="4" id="r4-4"><label for="r4-4">⭐</label>
+                            <input type="radio" name="r4" value="5" id="r4-5"><label for="r4-5">⭐</label>
+                        </div>
+                    </div>
+
+                    <button id="saveRatings" class="btn-secondary">Bewertung speichern</button>
+                </div>
+            </section>
+
+            <div class="navigation-buttons">
+                <a href="learn1.html" class="btn-secondary">← Zurück</a>
+                <a href="activity.html" class="btn-primary">Zum Aktivitätsbericht →</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>ABU EBA Digital | Dein Code: <span id="footerCode">--</span> | Seite 2/3</p>
+        </footer>
+    </div>
+
+    <script type="module" src="js/learn2.js"></script>
+</body>
+</html>
