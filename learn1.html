@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grundlagen - Berufseinstieg</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Berufseinstieg - Grundlagen</h1>
+            <p class="subtitle">Seite 1 von 3</p>
+        </header>
+
+        <nav class="page-nav">
+            <a href="index.html" class="nav-link">← Start</a>
+            <span class="nav-title">Grundlagen</span>
+            <a href="learn2.html" class="nav-link">Weiter →</a>
+        </nav>
+
+        <main class="learn-content">
+            <section class="content-block">
+                <h2>🎯 Was erwartet dich beim Berufseinstieg?</h2>
+                <p>Der Einstieg in die Berufswelt ist ein wichtiger Schritt. Du verlässt die Schulzeit und beginnst einen neuen Lebensabschnitt mit neuen Herausforderungen und Chancen.</p>
+
+                <div class="media-box">
+                    <h3>🎧 Audio: Die ersten Tage im Betrieb</h3>
+                    <audio id="audio1" controls>
+                        <source src="audio/berufseinstieg-basics.mp3" type="audio/mpeg">
+                        Dein Browser unterstützt keine Audio-Wiedergabe.
+                    </audio>
+                    <p class="media-info">Dauer: ca. 3 Minuten | Höre aufmerksam zu!</p>
+                </div>
+            </section>
+
+            <section class="content-block">
+                <h2>📝 Wichtige Begriffe kennenlernen</h2>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Arbeitsvertrag</h3>
+                        <p>Der Arbeitsvertrag regelt die Rechte und Pflichten zwischen dir und deinem Arbeitgeber. Wichtige Punkte sind: Lohn, Arbeitszeit, Ferien, Kündigungsfristen.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Probezeit</h3>
+                        <p>Die Probezeit dauert meist 1-3 Monate. In dieser Zeit können beide Seiten das Arbeitsverhältnis mit kurzer Frist beenden.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Arbeitszeugnis</h3>
+                        <p>Am Ende eines Arbeitsverhältnisses hast du Anspruch auf ein Arbeitszeugnis. Es dokumentiert deine Tätigkeiten und Leistungen.</p>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Sozialversicherungen</h3>
+                        <p>Als Arbeitnehmer:in bist du pflichtversichert: AHV, IV, EO, ALV, Pensionskasse, Unfallversicherung.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-block">
+                <h2>🎥 Video: Rechte und Pflichten</h2>
+                
+                <div class="media-box">
+                    <div class="video-placeholder" id="video1">
+                        <p>📺 Video: Deine Rechte und Pflichten als Lernende:r</p>
+                        <button class="btn-play" onclick="playVideo('video1')">▶ Video abspielen</button>
+                    </div>
+                    <p class="media-info">Dauer: ca. 4 Minuten</p>
+                </div>
+            </section>
+
+            <section class="content-block task-section">
+                <h2>✍️ Aufgabe 1: Reflexion</h2>
+                <p>Beantworte die folgende Frage ehrlich und ausführlich:</p>
+                
+                <div class="task-box">
+                    <label for="task1">Was sind deine drei grössten Erwartungen an deinen Berufseinstieg?</label>
+                    <textarea id="task1" rows="6" placeholder="Schreibe hier deine Gedanken auf... (mind. 50 Zeichen)"></textarea>
+                    <div class="char-counter">
+                        <span id="charCount1">0</span> Zeichen
+                    </div>
+                    <button id="saveTask1" class="btn-secondary">Antwort speichern</button>
+                </div>
+            </section>
+
+            <section class="content-block task-section">
+                <h2>🤔 Aufgabe 2: Verständnisfragen</h2>
+                
+                <div class="quiz-box">
+                    <div class="quiz-question">
+                        <p><strong>1.</strong> Wie lange dauert die Probezeit normalerweise?</p>
+                        <label><input type="radio" name="q1" value="a"> 1 Woche</label>
+                        <label><input type="radio" name="q1" value="b"> 1-3 Monate</label>
+                        <label><input type="radio" name="q1" value="c"> 6 Monate</label>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p><strong>2.</strong> Was regelt der Arbeitsvertrag NICHT?</p>
+                        <label><input type="radio" name="q2" value="a"> Lohn und Arbeitszeit</label>
+                        <label><input type="radio" name="q2" value="b"> Ferienanspruch</label>
+                        <label><input type="radio" name="q2" value="c"> Privates Freizeitverhalten</label>
+                    </div>
+
+                    <div class="quiz-question">
+                        <p><strong>3.</strong> Welche Versicherung gehört NICHT zu den obligatorischen Sozialversicherungen?</p>
+                        <label><input type="radio" name="q3" value="a"> AHV</label>
+                        <label><input type="radio" name="q3" value="b"> Hausratversicherung</label>
+                        <label><input type="radio" name="q3" value="c"> Unfallversicherung</label>
+                    </div>
+
+                    <button id="checkQuiz" class="btn-secondary">Antworten überprüfen</button>
+                    <div id="quizResult" class="quiz-result hidden"></div>
+                </div>
+            </section>
+
+            <div class="navigation-buttons">
+                <a href="index.html" class="btn-secondary">← Zurück</a>
+                <a href="learn2.html" class="btn-primary" id="nextPageBtn">Weiter zu Seite 2 →</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>ABU EBA Digital | Dein Code: <span id="footerCode">--</span> | Seite 1/3</p>
+        </footer>
+    </div>
+
+    <script type="module" src="js/learn1.js"></script>
+</body>
+</html>
