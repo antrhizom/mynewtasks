@@ -3,12 +3,12 @@ import { getFirestore, doc, getDoc, updateDoc } from 'https://www.gstatic.com/fi
 
 // Firebase Konfiguration
 const firebaseConfig = {
-    apiKey: "DEIN_API_KEY",
-    authDomain: "DEIN_AUTH_DOMAIN",
-    projectId: "DEIN_PROJECT_ID",
-    storageBucket: "DEIN_STORAGE_BUCKET",
-    messagingSenderId: "DEINE_MESSAGING_SENDER_ID",
-    appId: "DEINE_APP_ID"
+  apiKey: "AIzaSyAcf7uz3Q5MZWOqIn2ul94hJfJ0M9Yxt7I",
+  authDomain: "berufseinstieg-abu.firebaseapp.com",
+  projectId: "berufseinstieg-abu",
+  storageBucket: "berufseinstieg-abu.firebasestorage.app",
+  messagingSenderId: "270482961754",
+  appId: "1:270482961754:web:b35f38fbec64796ca36f63"
 };
 
 const app = initializeApp(firebaseConfig);
