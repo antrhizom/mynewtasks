@@ -19,18 +19,25 @@ let allData = [];
 // Daten laden
 async function loadData() {
     try {
-        const q = query(collection(db, 'stimmungsbarometer'), orderBy('createdAt', 'desc'));
+        // Lade alle Sessions die Stimmungsbarometer-Daten haben
+        const q = query(collection(db, 'sessions'), orderBy('createdAt', 'desc'));
         const snapshot = await getDocs(q);
         
         allData = [];
         snapshot.forEach(doc => {
-            allData.push({
-                id: doc.id,
-                ...doc.data()
-            });
+            const data = doc.data();
+            // Nur Sessions mit Stimmungsbarometer-Daten
+            if (data.stimmungsbarometer) {
+                allData.push({
+                    id: doc.id,
+                    code: data.code,
+                    timestamp: data.stimmungsbarometer_timestamp || data.createdAt,
+                    ...data.stimmungsbarometer
+                });
+            }
         });
         
-        console.log(`${allData.length} Antworten geladen`);
+        console.log(`${allData.length} Stimmungsbarometer-Antworten geladen`);
         analyzeData();
         
     } catch (error) {
@@ -311,7 +318,8 @@ function renderFeedbackList() {
     
     let html = '';
     feedbackData.forEach((d, index) => {
-        const date = d.timestamp ? new Date(d.timestamp).toLocaleDateString('de-CH') : 'Unbekannt';
+        const date = d.timestamp ? new Date(d.timestamp.toDate ? d.timestamp.toDate() : d.timestamp).toLocaleDateString('de-CH') : 'Unbekannt';
+        const code = d.code || 'N/A';
         const moodEmoji = {
             'sehr-gut': '😄',
             'gut': '🙂',
@@ -324,6 +332,7 @@ function renderFeedbackList() {
             <div class="feedback-card">
                 <div class="feedback-header">
                     <span class="feedback-mood">${moodEmoji}</span>
+                    <span class="feedback-code">Code: ${code}</span>
                     <span class="feedback-date">${date}</span>
                 </div>
                 <div class="feedback-content">
@@ -373,10 +382,11 @@ document.getElementById('exportCSVBtn').addEventListener('click', () => {
         return;
     }
     
-    let csv = 'Datum,Stimmung,Probleme Betrieb,Betrieb Details,Schulsituation,Schule Details,Organisation,Privat Details,Überlastung,Freizeit,Support Kenntnisse,Freies Feedback\n';
+    let csv = 'Code,Datum,Stimmung,Probleme Betrieb,Betrieb Details,Schulsituation,Schule Details,Organisation,Privat Details,Überlastung,Freizeit,Support Kenntnisse,Freies Feedback\n';
     
     allData.forEach(d => {
         const row = [
+            d.code || '',
             d.timestamp || '',
             d.mood || '',
             d.problemsCompany || '',

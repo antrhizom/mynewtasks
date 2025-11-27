@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { getFirestore, collection, addDoc, doc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
 // Firebase Konfiguration - GLEICHE WIE IN INDEX.HTML
 const firebaseConfig = {
@@ -13,6 +13,21 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+// Session-Daten laden
+const userCode = localStorage.getItem('berufseinstieg_code');
+const sessionId = localStorage.getItem('berufseinstieg_session');
+
+if (!userCode || !sessionId) {
+    alert('Keine aktive Sitzung gefunden. Du wirst zur Startseite weitergeleitet.');
+    window.location.href = 'index.html';
+}
+
+// Code in der Überschrift anzeigen
+document.querySelector('.subtitle').textContent = `Dein Code: ${userCode} - Wie geht es dir in deiner Lehre?`;
+
+// Code auch im Intro anzeigen
+document.getElementById('displayCode').textContent = userCode;
 
 // Zeichenzähler für Textfelder
 function setupCharCounter(textareaId, counterId) {
@@ -114,24 +129,26 @@ submitBtn.addEventListener('click', async () => {
     try {
         const data = collectFormData();
         
-        // In Firestore speichern
-        await addDoc(collection(db, 'stimmungsbarometer'), {
-            ...data,
-            createdAt: serverTimestamp()
+        // In der bestehenden Session speichern (nicht neue Collection!)
+        const sessionRef = doc(db, 'sessions', sessionId);
+        await updateDoc(sessionRef, {
+            stimmungsbarometer: data,
+            stimmungsbarometer_timestamp: serverTimestamp()
         });
         
         // Erfolg anzeigen
         submitSuccess.classList.remove('hidden');
         submitBtn.style.display = 'none';
         
+        // Code in Erfolgs-Nachricht anzeigen
+        document.getElementById('successCode').textContent = userCode;
+        
         // Nach oben scrollen
         window.scrollTo({ top: 0, behavior: 'smooth' });
         
-        // Optional: Nach 3 Sekunden zur Startseite
+        // Nach 3 Sekunden zu Lernseite 1 weiterleiten
         setTimeout(() => {
-            if (confirm('Möchtest du zur Startseite zurückkehren?')) {
-                window.location.href = 'index.html';
-            }
+            window.location.href = 'learn1.html';
         }, 3000);
         
     } catch (error) {
