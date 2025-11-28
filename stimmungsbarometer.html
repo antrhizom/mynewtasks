@@ -1,1 +1,294 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stimmungsbarometer - Berufseinstieg</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌡️ Stimmungsbarometer Berufseinstieg</h1>
+            <p class="subtitle">Wie geht es dir in deiner Lehre?</p>
+        </header>
 
+        <nav class="page-nav">
+            <a href="index.html" class="nav-link">← Zur Startseite</a>
+            <span class="nav-title">Stimmungsbarometer (Schritt 1)</span>
+            <span class="nav-info">Danach: Lerneinheit</span>
+        </nav>
+
+        <main class="learn-content">
+            <section class="content-block intro-block">
+                <h2>📊 Deine Meinung ist wichtig!</h2>
+                <p>Der Berufseinstieg ist eine spannende, aber auch herausfordernde Zeit. Wir möchten wissen, wie es dir geht und wo du eventuell Unterstützung brauchst.</p>
+                <p><strong>Deine Antworten werden mit deinem Code gespeichert</strong> und helfen uns, den Unterricht und die Unterstützung zu verbessern.</p>
+                <p class="code-info">🔑 Dein Code: <strong id="displayCode"></strong></p>
+            </section>
+
+            <!-- Allgemeine Stimmung -->
+            <section class="content-block">
+                <h2>😊 1. Wie fühlst du dich aktuell in deiner Lehre?</h2>
+                
+                <div class="mood-selection">
+                    <label class="mood-option">
+                        <input type="radio" name="mood" value="sehr-gut">
+                        <div class="mood-card">
+                            <div class="mood-emoji">😄</div>
+                            <div class="mood-label">Sehr gut</div>
+                            <div class="mood-description">Ich bin motiviert und zufrieden</div>
+                        </div>
+                    </label>
+
+                    <label class="mood-option">
+                        <input type="radio" name="mood" value="gut">
+                        <div class="mood-card">
+                            <div class="mood-emoji">🙂</div>
+                            <div class="mood-label">Gut</div>
+                            <div class="mood-description">Es läuft meistens gut</div>
+                        </div>
+                    </label>
+
+                    <label class="mood-option">
+                        <input type="radio" name="mood" value="mittel">
+                        <div class="mood-card">
+                            <div class="mood-emoji">😐</div>
+                            <div class="mood-label">Mittel</div>
+                            <div class="mood-description">Es gibt gute und schlechte Tage</div>
+                        </div>
+                    </label>
+
+                    <label class="mood-option">
+                        <input type="radio" name="mood" value="nicht-so-gut">
+                        <div class="mood-card">
+                            <div class="mood-emoji">😟</div>
+                            <div class="mood-label">Nicht so gut</div>
+                            <div class="mood-description">Ich habe öfters Schwierigkeiten</div>
+                        </div>
+                    </label>
+
+                    <label class="mood-option">
+                        <input type="radio" name="mood" value="schlecht">
+                        <div class="mood-card">
+                            <div class="mood-emoji">😢</div>
+                            <div class="mood-label">Schlecht</div>
+                            <div class="mood-description">Ich bin oft überfordert</div>
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Lehrbetrieb -->
+            <section class="content-block">
+                <h2>🏢 2. Situation im Lehrbetrieb</h2>
+                
+                <div class="question-group">
+                    <label class="question-label">Gab es bereits Probleme oder Herausforderungen im Lehrbetrieb?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="problems-company" value="nein"> Nein, alles läuft gut</label>
+                        <label><input type="radio" name="problems-company" value="kleine"> Ja, kleinere Schwierigkeiten</label>
+                        <label><input type="radio" name="problems-company" value="grosse"> Ja, grössere Probleme</label>
+                    </div>
+                </div>
+
+                <div class="conditional-section" id="companyProblemsDetails" style="display: none;">
+                    <label class="question-label">Welche Schwierigkeiten hattest du im Lehrbetrieb? (Mehrfachantworten möglich)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="company-issues" value="beziehung-berufsbildner"> Beziehung zur Berufsbildner:in</label>
+                        <label><input type="checkbox" name="company-issues" value="arbeitsklima"> Arbeitsklima im Team</label>
+                        <label><input type="checkbox" name="company-issues" value="ueberforderung"> Überforderung mit Aufgaben</label>
+                        <label><input type="checkbox" name="company-issues" value="unterforderung"> Unterforderung / zu wenig zu tun</label>
+                        <label><input type="checkbox" name="company-issues" value="arbeitszeiten"> Arbeitszeiten / Überstunden</label>
+                        <label><input type="checkbox" name="company-issues" value="kommunikation"> Kommunikationsprobleme</label>
+                        <label><input type="checkbox" name="company-issues" value="erwartungen"> Unklare Erwartungen</label>
+                        <label><input type="checkbox" name="company-issues" value="konflikte"> Konflikte mit Kolleg:innen</label>
+                        <label><input type="checkbox" name="company-issues" value="andere"> Andere</label>
+                    </div>
+
+                    <div class="text-input-group">
+                        <label>Möchtest du mehr dazu erzählen? (optional)</label>
+                        <textarea id="companyDetails" rows="4" placeholder="Beschreibe kurz, was vorgefallen ist oder welche Herausforderungen du hattest..."></textarea>
+                        <div class="char-counter"><span id="companyChars">0</span> Zeichen</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Berufsschule -->
+            <section class="content-block">
+                <h2>🎓 3. Einstieg in die Berufsschule</h2>
+                
+                <div class="question-group">
+                    <label class="question-label">Wie läuft es in der Berufsschule?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="school-situation" value="sehr-gut"> Sehr gut, ich komme gut mit</label>
+                        <label><input type="radio" name="school-situation" value="gut"> Gut, meistens kein Problem</label>
+                        <label><input type="radio" name="school-situation" value="herausfordernd"> Herausfordernd, aber machbar</label>
+                        <label><input type="radio" name="school-situation" value="schwierig"> Schwierig, ich brauche Unterstützung</label>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <label class="question-label">Gab es Schwierigkeiten beim Schuleintritt? (Mehrfachantworten möglich)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="school-issues" value="neue-mitschueler"> Neue Mitschüler:innen kennenlernen</label>
+                        <label><input type="checkbox" name="school-issues" value="lernstoff"> Schwieriger Lernstoff</label>
+                        <label><input type="checkbox" name="school-issues" value="lerntempo"> Zu schnelles Lerntempo</label>
+                        <label><input type="checkbox" name="school-issues" value="lehrpersonen"> Beziehung zu Lehrpersonen</label>
+                        <label><input type="checkbox" name="school-issues" value="organisation"> Schulorganisation (Stundenplan, Material)</label>
+                        <label><input type="checkbox" name="school-issues" value="hausaufgaben"> Hausaufgaben / Zeitmanagement</label>
+                        <label><input type="checkbox" name="school-issues" value="pruefungen"> Prüfungsangst / Prüfungsstress</label>
+                        <label><input type="checkbox" name="school-issues" value="anfahrt"> Schulweg / Anfahrt</label>
+                        <label><input type="checkbox" name="school-issues" value="keine"> Keine Schwierigkeiten</label>
+                    </div>
+                </div>
+
+                <div class="text-input-group">
+                    <label>Gibt es etwas Spezifisches, das dir in der Schule Mühe bereitet? (optional)</label>
+                    <textarea id="schoolDetails" rows="4" placeholder="Beschreibe, was dir schwerfällt oder wo du Unterstützung bräuchtest..."></textarea>
+                    <div class="char-counter"><span id="schoolChars">0</span> Zeichen</div>
+                </div>
+            </section>
+
+            <!-- Privatleben & Organisation -->
+            <section class="content-block">
+                <h2>🏠 4. Organisation im Privatleben</h2>
+                
+                <div class="question-group">
+                    <label class="question-label">Wie gut kommst du mit der Organisation deines Alltags zurecht?</label>
+                    <div class="rating-scale">
+                        <label><input type="radio" name="organization" value="1"> <span class="scale-label">1 - Sehr schlecht</span></label>
+                        <label><input type="radio" name="organization" value="2"> <span class="scale-label">2</span></label>
+                        <label><input type="radio" name="organization" value="3"> <span class="scale-label">3</span></label>
+                        <label><input type="radio" name="organization" value="4"> <span class="scale-label">4</span></label>
+                        <label><input type="radio" name="organization" value="5"> <span class="scale-label">5 - Sehr gut</span></label>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <label class="question-label">Welche Herausforderungen hast du in der privaten Organisation? (Mehrfachantworten möglich)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="private-issues" value="zeitmanagement"> Zeitmanagement (Arbeit, Schule, Freizeit)</label>
+                        <label><input type="checkbox" name="private-issues" value="haushalt"> Haushalt (Putzen, Wäsche, Einkaufen)</label>
+                        <label><input type="checkbox" name="private-issues" value="finanzen"> Finanzen (Budget, Rechnungen zahlen)</label>
+                        <label><input type="checkbox" name="private-issues" value="schlaf"> Genug Schlaf finden</label>
+                        <label><input type="checkbox" name="private-issues" value="ernaehrung"> Gesunde Ernährung</label>
+                        <label><input type="checkbox" name="private-issues" value="soziales"> Zeit für Freunde/Familie</label>
+                        <label><input type="checkbox" name="private-issues" value="hobbys"> Zeit für Hobbys</label>
+                        <label><input type="checkbox" name="private-issues" value="stress"> Stress-Management</label>
+                        <label><input type="checkbox" name="private-issues" value="selbststaendigkeit"> Selbstständigkeit (weg von Zuhause)</label>
+                        <label><input type="checkbox" name="private-issues" value="keine"> Keine besonderen Herausforderungen</label>
+                    </div>
+                </div>
+
+                <div class="text-input-group">
+                    <label>Welche organisatorischen Tipps würden dir helfen? (optional)</label>
+                    <textarea id="privateDetails" rows="4" placeholder="Was würde dir den Alltag erleichtern? Welche Unterstützung bräuchtest du?"></textarea>
+                    <div class="char-counter"><span id="privateChars">0</span> Zeichen</div>
+                </div>
+            </section>
+
+            <!-- Work-Life-Balance -->
+            <section class="content-block">
+                <h2>⚖️ 5. Work-Life-Balance</h2>
+                
+                <div class="question-group">
+                    <label class="question-label">Fühlst du dich durch die Lehre überlastet?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="workload" value="nein"> Nein, ich habe genug Freizeit</label>
+                        <label><input type="radio" name="workload" value="manchmal"> Manchmal, es ist anspruchsvoll</label>
+                        <label><input type="radio" name="workload" value="oft"> Oft, ich bin gestresst</label>
+                        <label><input type="radio" name="workload" value="staendig"> Ständig, ich bin erschöpft</label>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <label class="question-label">Wie viele Stunden pro Woche bleiben dir für Freizeit (nach Arbeit, Schule, Hausaufgaben)?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="freetime" value="weniger-5"> Weniger als 5 Stunden</label>
+                        <label><input type="radio" name="freetime" value="5-10"> 5-10 Stunden</label>
+                        <label><input type="radio" name="freetime" value="10-15"> 10-15 Stunden</label>
+                        <label><input type="radio" name="freetime" value="15-20"> 15-20 Stunden</label>
+                        <label><input type="radio" name="freetime" value="mehr-20"> Mehr als 20 Stunden</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Unterstützung -->
+            <section class="content-block">
+                <h2>🤝 6. Unterstützung & Hilfe</h2>
+                
+                <div class="question-group">
+                    <label class="question-label">Weisst du, an wen du dich bei Problemen wenden kannst?</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="support-knowledge" value="ja-genau"> Ja, ich weiss genau, wer mir hilft</label>
+                        <label><input type="radio" name="support-knowledge" value="ja-ungefaehr"> Ja, ungefähr</label>
+                        <label><input type="radio" name="support-knowledge" value="nein"> Nein, ich bin unsicher</label>
+                    </div>
+                </div>
+
+                <div class="question-group">
+                    <label class="question-label">Welche Art von Unterstützung würde dir am meisten helfen? (Mehrfachantworten möglich)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="support-needs" value="lernhilfe"> Lernhilfe / Nachhilfe</label>
+                        <label><input type="checkbox" name="support-needs" value="zeitmanagement-tipps"> Tipps für Zeitmanagement</label>
+                        <label><input type="checkbox" name="support-needs" value="gespraech"> Gespräch mit Vertrauensperson</label>
+                        <label><input type="checkbox" name="support-needs" value="konfliktloesung"> Hilfe bei Konflikten im Betrieb</label>
+                        <label><input type="checkbox" name="support-needs" value="organisation-tipps"> Organisations-Tipps</label>
+                        <label><input type="checkbox" name="support-needs" value="stress-management"> Stress-Management</label>
+                        <label><input type="checkbox" name="support-needs" value="finanzberatung"> Finanzberatung / Budgethilfe</label>
+                        <label><input type="checkbox" name="support-needs" value="austausch"> Austausch mit anderen Lernenden</label>
+                        <label><input type="checkbox" name="support-needs" value="keine"> Keine Unterstützung nötig</label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Abschlussfrage -->
+            <section class="content-block">
+                <h2>💬 7. Freies Feedback</h2>
+                
+                <div class="text-input-group">
+                    <label>Gibt es sonst noch etwas, das du uns mitteilen möchtest? (optional)</label>
+                    <textarea id="finalFeedback" rows="6" placeholder="Hier ist Platz für alles, was du uns noch sagen möchtest - positive Erfahrungen, Verbesserungsvorschläge, Sorgen..."></textarea>
+                    <div class="char-counter"><span id="finalChars">0</span> Zeichen</div>
+                </div>
+            </section>
+
+            <!-- Submit -->
+            <section class="content-block submit-section">
+                <div class="submit-info">
+                    <p>✅ <strong>Deine Antworten werden mit deinem Code gespeichert</strong></p>
+                    <p>📊 Die Auswertung hilft uns, den Unterricht zu verbessern und gezielte Unterstützung anzubieten.</p>
+                    <p>🤝 Bei akuten Problemen wende dich bitte direkt an deine Lehrperson oder Berufsbildner:in.</p>
+                    <p>➡️ Nach dem Absenden geht es weiter zur Lerneinheit.</p>
+                </div>
+                
+                <button id="submitBtn" class="btn-primary btn-large">Weiter zur Lerneinheit</button>
+                
+                <div id="submitSuccess" class="success-message hidden">
+                    <h3>✅ Vielen Dank für dein Feedback!</h3>
+                    <p>Deine Antworten wurden mit deinem Code <strong id="successCode"></strong> gespeichert.</p>
+                    <p>Du wirst jetzt automatisch zur Lerneinheit weitergeleitet...</p>
+                    <p><strong>Brauchst du sofort Hilfe?</strong> Hier sind Anlaufstellen:</p>
+                    <ul>
+                        <li>Klassenlehrperson</li>
+                        <li>Berufsbildner:in im Betrieb</li>
+                        <li>Schulische Beratung / Sozialberatung</li>
+                        <li>Pro Juventute: 147 (kostenlos, 24/7)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="navigation-buttons">
+                <a href="index.html" class="btn-secondary">← Zurück zur Startseite</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>ABU EBA Digital | Stimmungsbarometer</p>
+        </footer>
+    </div>
+
+    <script type="module" src="js/stimmungsbarometer.js"></script>
+</body>
+</html>

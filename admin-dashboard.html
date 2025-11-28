@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auswertung Stimmungsbarometer - Admin</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Auswertung Stimmungsbarometer</h1>
+            <p class="subtitle">Übersicht der Rückmeldungen</p>
+        </header>
+
+        <nav class="page-nav">
+            <a href="index.html" class="nav-link">← Zur Startseite</a>
+            <span class="nav-title">Admin-Bereich</span>
+            <button id="refreshBtn" class="btn-secondary">🔄 Aktualisieren</button>
+        </nav>
+
+        <main class="learn-content">
+            <!-- Statistik-Übersicht -->
+            <section class="content-block">
+                <h2>📈 Gesamtübersicht</h2>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalResponses">--</div>
+                        <div class="stat-label">Teilnehmende</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avgMood">--</div>
+                        <div class="stat-label">Durchschnittsstimmung</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="problemCount">--</div>
+                        <div class="stat-label">Melden Probleme</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="needSupport">--</div>
+                        <div class="stat-label">Brauchen Unterstützung</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stimmungsverteilung -->
+            <section class="content-block">
+                <h2>😊 Stimmungsverteilung</h2>
+                <div id="moodChart" class="chart-container">
+                    <div class="loading">Lade Daten...</div>
+                </div>
+            </section>
+
+            <!-- Problembereiche -->
+            <section class="content-block">
+                <h2>⚠️ Häufigste Problembereiche</h2>
+                
+                <h3>Lehrbetrieb</h3>
+                <div id="companyIssuesChart" class="chart-container">
+                    <div class="loading">Lade Daten...</div>
+                </div>
+
+                <h3>Berufsschule</h3>
+                <div id="schoolIssuesChart" class="chart-container">
+                    <div class="loading">Lade Daten...</div>
+                </div>
+
+                <h3>Privatleben & Organisation</h3>
+                <div id="privateIssuesChart" class="chart-container">
+                    <div class="loading">Lade Daten...</div>
+                </div>
+            </section>
+
+            <!-- Work-Life-Balance -->
+            <section class="content-block">
+                <h2>⚖️ Work-Life-Balance</h2>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="overloadedCount">--</div>
+                        <div class="stat-label">Fühlen sich überlastet</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avgFreetime">--</div>
+                        <div class="stat-label">Durchschn. Freizeit</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Unterstützungsbedarf -->
+            <section class="content-block">
+                <h2>🤝 Gewünschte Unterstützung</h2>
+                <div id="supportNeedsChart" class="chart-container">
+                    <div class="loading">Lade Daten...</div>
+                </div>
+            </section>
+
+            <!-- Detaillierte Rückmeldungen -->
+            <section class="content-block">
+                <h2>💬 Detaillierte Rückmeldungen</h2>
+                <button id="showDetailsBtn" class="btn-secondary">Alle Textantworten anzeigen</button>
+                
+                <div id="detailsContainer" class="details-container hidden">
+                    <div id="feedbackList" class="feedback-list">
+                        <div class="loading">Lade Daten...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Export -->
+            <section class="content-block">
+                <h2>📥 Daten exportieren</h2>
+                <div class="action-buttons">
+                    <button id="exportCSVBtn" class="btn-secondary">Als CSV herunterladen</button>
+                    <button id="exportPDFBtn" class="btn-secondary">Als PDF herunterladen</button>
+                </div>
+            </section>
+
+            <div class="navigation-buttons">
+                <a href="index.html" class="btn-secondary">← Zur Startseite</a>
+            </div>
+        </main>
+
+        <footer>
+            <p>ABU EBA Digital | Admin-Bereich</p>
+        </footer>
+    </div>
+
+    <script type="module" src="js/admin-dashboard.js"></script>
+</body>
+</html>
