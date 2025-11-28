@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stimmungsbarometer - Berufseinstieg</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Zusätzliche Styles für Step-by-Step */
+        .progress-tracker {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .progress-tracker::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--border-color);
+            z-index: 0;
+        }
+        
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 3px;
+            background: var(--primary-color);
+            z-index: 1;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        
+        .progress-step.active .progress-circle {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .progress-step.completed .progress-circle {
+            border-color: var(--success-color);
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .progress-label {
+            font-size: 0.85rem;
+            color: var(--text-medium);
+        }
+        
+        .step-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .step-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .live-stats {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bfdbfe 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .live-stats h4 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .stat-bar {
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .stat-progress {
+            height: 25px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .stat-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color) 0%, #1e40af 100%);
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        .step-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn-prev {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-next {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .quick-select {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        
+        .quick-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .quick-btn:hover {
+            border-color: var(--primary-color);
+            background: #e0f2fe;
+        }
+        
+        .quick-btn.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌡️ Stimmungsbarometer</h1>
+            <p class="subtitle" id="headerSubtitle">Dein Code: -- | Wie geht es dir?</p>
+        </header>
+
+        <main class="learn-content">
+            <!-- Progress Tracker -->
+            <div class="progress-tracker">
+                <div class="progress-line" id="progressLine" style="width: 0%"></div>
+                <div class="progress-step active" data-step="1">
+                    <div class="progress-circle">1</div>
+                    <div class="progress-label">Stimmung</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="progress-circle">2</div>
+                    <div class="progress-label">Lehrbetrieb</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="progress-circle">3</div>
+                    <div class="progress-label">Schule</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="progress-circle">4</div>
+                    <div class="progress-label">Alltag</div>
+                </div>
+                <div class="progress-step" data-step="5">
+                    <div class="progress-circle">5</div>
+                    <div class="progress-label">Fertig</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Stimmung -->
+            <div class="step-content active" id="step1">
+                <div class="content-block">
+                    <h2>😊 Wie fühlst du dich aktuell in deiner Lehre?</h2>
+                    
+                    <div class="mood-selection">
+                        <label class="mood-option">
+                            <input type="radio" name="mood" value="sehr-gut" data-emoji="😄">
+                            <div class="mood-card">
+                                <div class="mood-emoji">😄</div>
+                                <div class="mood-label">Sehr gut</div>
+                            </div>
+                        </label>
+                        <label class="mood-option">
+                            <input type="radio" name="mood" value="gut" data-emoji="🙂">
+                            <div class="mood-card">
+                                <div class="mood-emoji">🙂</div>
+                                <div class="mood-label">Gut</div>
+                            </div>
+                        </label>
+                        <label class="mood-option">
+                            <input type="radio" name="mood" value="mittel" data-emoji="😐">
+                            <div class="mood-card">
+                                <div class="mood-emoji">😐</div>
+                                <div class="mood-label">Mittel</div>
+                            </div>
+                        </label>
+                        <label class="mood-option">
+                            <input type="radio" name="mood" value="nicht-so-gut" data-emoji="😟">
+                            <div class="mood-card">
+                                <div class="mood-emoji">😟</div>
+                                <div class="mood-label">Nicht so gut</div>
+                            </div>
+                        </label>
+                        <label class="mood-option">
+                            <input type="radio" name="mood" value="schlecht" data-emoji="😢">
+                            <div class="mood-card">
+                                <div class="mood-emoji">😢</div>
+                                <div class="mood-label">Schlecht</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="live-stats" id="moodStats" style="display: none;">
+                        <h4>📊 So geht es anderen Lernenden:</h4>
+                        <div id="moodStatsContent"></div>
+                    </div>
+                </div>
+                
+                <div class="step-buttons">
+                    <button class="btn-secondary btn-prev" disabled>← Zurück</button>
+                    <button class="btn-primary btn-next" id="step1Next">Weiter →</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Lehrbetrieb -->
+            <div class="step-content" id="step2">
+                <div class="content-block">
+                    <h2>🏢 Situation im Lehrbetrieb</h2>
+                    
+                    <div class="question-group">
+                        <label class="question-label">Gab es bereits Probleme oder Herausforderungen?</label>
+                        <div class="quick-select">
+                            <button class="quick-btn" data-value="nein">✅ Nein, alles gut</button>
+                            <button class="quick-btn" data-value="kleine">⚠️ Kleinere Schwierigkeiten</button>
+                            <button class="quick-btn" data-value="grosse">❌ Grössere Probleme</button>
+                        </div>
+                        <input type="hidden" name="problems-company" id="problemsCompany">
+                    </div>
+
+                    <div class="conditional-section" id="companyProblemsDetails" style="display: none;">
+                        <label class="question-label">Welche Schwierigkeiten? (Mehrfach möglich)</label>
+                        <div class="checkbox-group" id="companyIssuesGroup">
+                            <label><input type="checkbox" value="beziehung-berufsbildner"> Beziehung zur Berufsbildner:in</label>
+                            <label><input type="checkbox" value="arbeitsklima"> Arbeitsklima</label>
+                            <label><input type="checkbox" value="ueberforderung"> Überforderung</label>
+                            <label><input type="checkbox" value="kommunikation"> Kommunikation</label>
+                            <label><input type="checkbox" value="andere"> Andere</label>
+                        </div>
+                    </div>
+
+                    <div class="live-stats" id="companyStats" style="display: none;">
+                        <h4>📊 Probleme im Lehrbetrieb (andere Lernende):</h4>
+                        <div id="companyStatsContent"></div>
+                    </div>
+                </div>
+                
+                <div class="step-buttons">
+                    <button class="btn-secondary btn-prev" data-prev="1">← Zurück</button>
+                    <button class="btn-primary btn-next" id="step2Next">Weiter →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Schule -->
+            <div class="step-content" id="step3">
+                <div class="content-block">
+                    <h2>🎓 Berufsschule</h2>
+                    
+                    <div class="question-group">
+                        <label class="question-label">Wie läuft es in der Schule?</label>
+                        <div class="quick-select">
+                            <button class="quick-btn" data-value="sehr-gut">😄 Sehr gut</button>
+                            <button class="quick-btn" data-value="gut">🙂 Gut</button>
+                            <button class="quick-btn" data-value="herausfordernd">😐 Herausfordernd</button>
+                            <button class="quick-btn" data-value="schwierig">😟 Schwierig</button>
+                        </div>
+                        <input type="hidden" name="school-situation" id="schoolSituation">
+                    </div>
+
+                    <div class="question-group">
+                        <label class="question-label">Schwierigkeiten? (Mehrfach möglich)</label>
+                        <div class="checkbox-group" id="schoolIssuesGroup">
+                            <label><input type="checkbox" value="lernstoff"> Schwieriger Lernstoff</label>
+                            <label><input type="checkbox" value="lerntempo"> Zu schnelles Tempo</label>
+                            <label><input type="checkbox" value="hausaufgaben"> Hausaufgaben / Zeit</label>
+                            <label><input type="checkbox" value="pruefungen"> Prüfungsstress</label>
+                            <label><input type="checkbox" value="keine"> Keine Schwierigkeiten</label>
+                        </div>
+                    </div>
+
+                    <div class="live-stats" id="schoolStats" style="display: none;">
+                        <h4>📊 Häufigste Schul-Herausforderungen:</h4>
+                        <div id="schoolStatsContent"></div>
+                    </div>
+                </div>
+                
+                <div class="step-buttons">
+                    <button class="btn-secondary btn-prev" data-prev="2">← Zurück</button>
+                    <button class="btn-primary btn-next" id="step3Next">Weiter →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Alltag -->
+            <div class="step-content" id="step4">
+                <div class="content-block">
+                    <h2>🏠 Organisation im Alltag</h2>
+                    
+                    <div class="question-group">
+                        <label class="question-label">Wie gut kommst du mit der Organisation zurecht?</label>
+                        <div class="quick-select">
+                            <button class="quick-btn" data-value="5">⭐⭐⭐⭐⭐ Sehr gut</button>
+                            <button class="quick-btn" data-value="4">⭐⭐⭐⭐ Gut</button>
+                            <button class="quick-btn" data-value="3">⭐⭐⭐ Mittel</button>
+                            <button class="quick-btn" data-value="2">⭐⭐ Schwierig</button>
+                            <button class="quick-btn" data-value="1">⭐ Sehr schwierig</button>
+                        </div>
+                        <input type="hidden" name="organization" id="organization">
+                    </div>
+
+                    <div class="question-group">
+                        <label class="question-label">Herausforderungen? (Mehrfach möglich)</label>
+                        <div class="checkbox-group" id="privateIssuesGroup">
+                            <label><input type="checkbox" value="zeitmanagement"> Zeitmanagement</label>
+                            <label><input type="checkbox" value="finanzen"> Finanzen / Budget</label>
+                            <label><input type="checkbox" value="schlaf"> Genug Schlaf</label>
+                            <label><input type="checkbox" value="stress"> Stress</label>
+                            <label><input type="checkbox" value="keine"> Keine</label>
+                        </div>
+                    </div>
+
+                    <div class="live-stats" id="privateStats" style="display: none;">
+                        <h4>📊 Alltags-Herausforderungen anderer:</h4>
+                        <div id="privateStatsContent"></div>
+                    </div>
+                </div>
+                
+                <div class="step-buttons">
+                    <button class="btn-secondary btn-prev" data-prev="3">← Zurück</button>
+                    <button class="btn-primary btn-next" id="step4Next">Absenden →</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Erfolg -->
+            <div class="step-content" id="step5">
+                <div class="content-block success-message">
+                    <h2>✅ Vielen Dank!</h2>
+                    <p>Deine Antworten wurden mit dem Code <strong id="finalCode"></strong> gespeichert.</p>
+                    <p>Du wirst jetzt zur Lerneinheit weitergeleitet...</p>
+                    <div class="loading-spinner" style="margin: 30px auto; text-align: center;">
+                        <div style="font-size: 3rem;">⏳</div>
+                        <p>Weiterleitung in <span id="countdown">3</span> Sekunden...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>ABU EBA Digital</p>
+        </footer>
+    </div>
+
+    <script type="module" src="js/stimmungsbarometer-v2.js"></script>
+</body>
+</html>
