@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stimmungsbarometer - Berufseinstieg</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Tier-Profile Styles */
+        .mood-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .mood-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            padding: 30px 20px;
+            border-radius: 16px;
+            text-align: center;
+            border: 3px solid #e2e8f0;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mood-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        .mood-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            border-color: #3b82f6;
+        }
+        
+        .mood-card:hover::before {
+            opacity: 1;
+        }
+        
+        .mood-option input:checked + .mood-card {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            transform: scale(1.02);
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.25);
+        }
+        
+        /* Tier-Illustration mit Animation */
+        .animal-illustration {
+            font-size: 4rem;
+            margin: 15px 0;
+            animation: float 3s ease-in-out infinite;
+            display: inline-block;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(2deg); }
+            50% { transform: translateY(0px) rotate(0deg); }
+            75% { transform: translateY(-5px) rotate(-2deg); }
+        }
+        
+        .mood-card:hover .animal-illustration {
+            animation: bounce 0.6s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1) translateY(0); }
+            25% { transform: scale(1.1) translateY(-15px); }
+            50% { transform: scale(1.05) translateY(-8px); }
+            75% { transform: scale(1.08) translateY(-12px); }
+        }
+        
+        .animal-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 10px 0 5px;
+        }
+        
+        .animal-trait {
+            font-size: 0.95rem;
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        .mood-description {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        
+        /* Quick Buttons mit Tieren */
+        .quick-select {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .quick-btn {
+            padding: 18px 25px;
+            border: 3px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .quick-btn .quick-icon {
+            font-size: 1.5rem;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        
+        .quick-btn:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+        }
+        
+        .quick-btn:hover .quick-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+        
+        .quick-btn.selected {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Live Stats mit Bewegung */
+        .live-stats {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 25px;
+            border-radius: 14px;
+            margin: 25px 0;
+            border-left: 5px solid #3b82f6;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .stat-bar {
+            margin: 15px 0;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .stat-progress {
+            height: 32px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .stat-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            color: white;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .your-choice {
+            color: #fbbf24;
+            font-weight: 800;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        
+        /* Progress Tracker */
+        .progress-tracker {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .progress-tracker::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e2e8f0;
+        }
+        
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+            transition: width 0.6s ease;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: 700;
+            transition: all 0.4s;
+        }
+        
+        .progress-step.active .progress-circle {
+            border-color: #3b82f6;
+            background: #3b82f6;
+            color: white;
+            animation: ping 1s ease-in-out infinite;
+        }
+        
+        @keyframes ping {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+        }
+        
+        .progress-step.completed .progress-circle {
+            border-color: #10b981;
+            background: #10b981;
+            color: white;
+        }
+        
+        .step-content {
+            display: none;
+        }
+        
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Checkbox mit Animation */
+        .checkbox-group label {
+            padding: 15px 20px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-group label:hover {
+            background: #f0f9ff;
+            border-color: #3b82f6;
+            transform: translateX(5px);
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+        }
+        
+        /* Buttons */
+        .step-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+        
+        .step-buttons button {
+            flex: 1;
+            padding: 16px 32px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn-next {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+        }
+        
+        .btn-next:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-prev {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .content-block h2 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #1e293b;
+        }
+        
+        .question-label {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .mood-selection {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .animal-illustration {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌡️ Stimmungsbarometer</h1>
+            <p class="subtitle" id="headerSubtitle">Wie geht es dir?</p>
+        </header>
+
+        <main class="learn-content">
+            <!-- Progress -->
+            <div class="progress-tracker">
+                <div class="progress-line" id="progressLine"></div>
+                <div class="progress-step active" data-step="1">
+                    <div class="progress-circle">1</div>
+                    <div class="progress-label">Stimmung</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="progress-circle">2</div>
+                    <div class="progress-label">Lehrbetrieb</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="progress-circle">3</div>
+                    <div class="progress-label">Schule</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="progress-circle">4</div>
+                    <div class="progress-label">Fertig</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Stimmung mit Tieren -->
+            <div class="step-content active" id="step1">
+                <div class="content-block">
+                    <h2>🐾 Welches Tier beschreibt deine aktuelle Stimmung?</h2>
+                    
+                    <div class="mood-selection">
+                        <label class="mood-option">
+                            <input type="radio" name="mood" value="sehr-gut" style="display:none">
+                            <div class="mood-card">
+                                <div class="animal-illustration">🦁</div>
+                                <div class="animal-name">Der Löwe</div>
+                                <div class="animal-trait">Stark & Selbstbewusst</div>
+                                <div class="mood-description">Ich fühle mich motiviert und bereit für neue Herausforderungen!</div>
+                            </div>
+                        </label>
+                        <label class="mood-option">
+                            <input type="radio" name="mood" value="gut" style="display:none">
+                            <div class="mood-card">
+                                <div class="animal-illustration">🐬</div>
+                                <div class="animal-name">Der Delfin</div>
+                                <div class="animal-trait">Verspielt & Positiv</div>
+                                <div class="mood-description">Es läuft gut und ich bin zufrieden mit meiner Situation.</div>
+                            </div>
+                        </label>
+                        <label class="mood-option">
+                            <input type="radio" name="mood" value="mittel" style="display:none">
+                            <div class="mood-card">
+                                <div class="animal-illustration">🐢</div>
+                                <div class="animal-name">Die Schildkröte</div>
+                                <div class="animal-trait">Bedächtig & Geduldig</div>
+                                <div class="mood-description">Es gibt gute und weniger gute Momente, aber ich komme zurecht.</div>
+                            </div>
+                        </label>
+                        <label class="mood-option">
+                            <input type="radio" name="mood" value="nicht-so-gut" style="display:none">
+                            <div class="mood-card">
+                                <div class="animal-illustration">🦔</div>
+                                <div class="animal-name">Der Igel</div>
+                                <div class="animal-trait">Vorsichtig & Zurückhaltend</div>
+                                <div class="mood-description">Ich habe öfters Schwierigkeiten und fühle mich unsicher.</div>
+                            </div>
+                        </label>
+                        <label class="mood-option">
+                            <input type="radio" name="mood" value="schlecht" style="display:none">
+                            <div class="mood-card">
+                                <div class="animal-illustration">🐌</div>
+                                <div class="animal-name">Die Schnecke</div>
+                                <div class="animal-trait">Langsam & Erschöpft</div>
+                                <div class="mood-description">Ich fühle mich oft überfordert und brauche Unterstützung.</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="live-stats" id="moodStats" style="display:none;">
+                        <h3>📊 So fühlen sich andere Lernende:</h3>
+                        <div id="moodStatsContent"></div>
+                    </div>
+                </div>
+                
+                <div class="step-buttons">
+                    <button class="btn-prev" disabled>← Zurück</button>
+                    <button class="btn-next" id="step1Next">Weiter →</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Lehrbetrieb -->
+            <div class="step-content" id="step2">
+                <div class="content-block">
+                    <h2>🏢 Situation im Lehrbetrieb</h2>
+                    
+                    <div class="question-group">
+                        <label class="question-label">Gibt es Probleme oder Herausforderungen?</label>
+                        <div class="quick-select">
+                            <button class="quick-btn" data-value="nein" data-name="problems-company">
+                                <span class="quick-icon">✅</span>
+                                <span>Alles läuft gut</span>
+                            </button>
+                            <button class="quick-btn" data-value="kleine" data-name="problems-company">
+                                <span class="quick-icon">⚠️</span>
+                                <span>Kleinere Schwierigkeiten</span>
+                            </button>
+                            <button class="quick-btn" data-value="grosse" data-name="problems-company">
+                                <span class="quick-icon">❌</span>
+                                <span>Grössere Probleme</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="live-stats" id="companyStats" style="display:none;">
+                        <h3>📊 Probleme im Lehrbetrieb:</h3>
+                        <div id="companyStatsContent"></div>
+                    </div>
+
+                    <div id="companyDetails" style="display:none;">
+                        <label class="question-label">Welche Schwierigkeiten?</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" value="beziehung"> Beziehung zur Berufsbildner:in</label>
+                            <label><input type="checkbox" value="arbeitsklima"> Arbeitsklima</label>
+                            <label><input type="checkbox" value="ueberforderung"> Überforderung</label>
+                            <label><input type="checkbox" value="kommunikation"> Kommunikation</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-buttons">
+                    <button class="btn-prev" data-prev="1">← Zurück</button>
+                    <button class="btn-next" id="step2Next">Weiter →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Schule -->
+            <div class="step-content" id="step3">
+                <div class="content-block">
+                    <h2>🎓 Berufsschule</h2>
+                    
+                    <div class="question-group">
+                        <label class="question-label">Wie läuft es in der Schule?</label>
+                        <div class="quick-select">
+                            <button class="quick-btn" data-value="sehr-gut" data-name="school-situation">
+                                <span class="quick-icon">🦁</span>
+                                <span>Sehr gut</span>
+                            </button>
+                            <button class="quick-btn" data-value="gut" data-name="school-situation">
+                                <span class="quick-icon">🐬</span>
+                                <span>Gut</span>
+                            </button>
+                            <button class="quick-btn" data-value="herausfordernd" data-name="school-situation">
+                                <span class="quick-icon">🐢</span>
+                                <span>Herausfordernd</span>
+                            </button>
+                            <button class="quick-btn" data-value="schwierig" data-name="school-situation">
+                                <span class="quick-icon">🦔</span>
+                                <span>Schwierig</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="live-stats" id="schoolStats" style="display:none;">
+                        <h3>📊 So läuft die Schule bei anderen:</h3>
+                        <div id="schoolStatsContent"></div>
+                    </div>
+
+                    <label class="question-label">Schwierigkeiten? (Mehrfach möglich)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" value="lernstoff"> Schwieriger Lernstoff</label>
+                        <label><input type="checkbox" value="lerntempo"> Zu schnelles Tempo</label>
+                        <label><input type="checkbox" value="hausaufgaben"> Hausaufgaben</label>
+                        <label><input type="checkbox" value="pruefungen"> Prüfungsstress</label>
+                        <label><input type="checkbox" value="keine"> Keine Schwierigkeiten</label>
+                    </div>
+                </div>
+                
+                <div class="step-buttons">
+                    <button class="btn-prev" data-prev="2">← Zurück</button>
+                    <button class="btn-next" id="step3Next">Absenden & Weiter →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Fertig -->
+            <div class="step-content" id="step4">
+                <div class="content-block" style="text-align:center;">
+                    <div style="font-size:5rem; animation: bounce 1s ease infinite;">✅</div>
+                    <h2>Vielen Dank!</h2>
+                    <p style="font-size:1.3rem;">Deine Antworten wurden mit Code <strong id="finalCode"></strong> gespeichert.</p>
+                    <div style="margin:30px 0; font-size:4rem; animation: float 2s ease-in-out infinite;">🚀</div>
+                    <p style="font-size:1.2rem;">Weiterleitung in <strong id="countdown">3</strong> Sekunden...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/stimmungsbarometer-interactive.js"></script>
+</body>
+</html>
